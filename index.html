@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <title>Legacy Made Ventures</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Legacy Made Ventures – a private holding company focused on long-term value creation through real estate, strategic investments, and disciplined asset protection.">
+  <meta name="description" content="Legacy Made Ventures – a private holding company with a long-term, preservation-first philosophy.">
 
-  <!-- Optional: Luxury serif + clean sans -->
+  <!-- Luxury serif + clean sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -14,23 +14,20 @@
   <style>
     :root {
       --bg: #050608;
-      --bg-alt: #0b0d12;
+      --bg-alt: #090b10;
       --accent: #c5a46d;
       --accent-soft: rgba(197,164,109,0.35);
-      --text: #f4f4f4;
+      --text: #f5f5f5;
       --muted: #9a9ea8;
-      --border-subtle: rgba(255,255,255,0.06);
-      --card-bg: rgba(10,12,18,0.7);
-      --radius-lg: 22px;
-      --radius-pill: 1000px;
-      --shadow-soft: 0 24px 70px rgba(0, 0, 0, 0.75);
-      --blur: 18px;
+      --border-subtle: rgba(255,255,255,0.08);
+      --radius-pill: 999px;
+      --shadow-soft: 0 24px 70px rgba(0, 0, 0, 0.85);
     }
 
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
     html, body {
@@ -40,16 +37,19 @@
 
     body {
       font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top left, #202231 0, #050608 48%, #020308 100%);
+      background:
+        radial-gradient(circle at top left, #202231 0, #050608 50%, #020308 100%);
       color: var(--text);
       -webkit-font-smoothing: antialiased;
+      position: relative;
+      overflow-x: hidden;
     }
 
     .noise-overlay {
       pointer-events: none;
       position: fixed;
       inset: 0;
-      opacity: 0.12;
+      opacity: 0.10;
       mix-blend-mode: soft-light;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='noStitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.7'/%3E%3C/svg%3E");
       z-index: 1;
@@ -59,22 +59,22 @@
       position: relative;
       min-height: 100vh;
       z-index: 2;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* Top Navigation */
+    /* Top bar */
     .nav {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 68px;
+      inset: 0 0 auto 0;
+      height: 64px;
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 10;
       backdrop-filter: blur(18px);
-      background: radial-gradient(circle at top, rgba(8,9,14,0.96), rgba(5,6,10,0.94));
+      background: linear-gradient(to bottom, rgba(5,6,10,0.96), rgba(5,6,10,0.88), transparent);
       border-bottom: 1px solid var(--border-subtle);
+      z-index: 10;
     }
 
     .nav-inner {
@@ -95,10 +95,10 @@
     .nav-mark {
       width: 28px;
       height: 28px;
-      border-radius: 9px;
+      border-radius: 11px;
       border: 1px solid rgba(255,255,255,0.18);
       background: radial-gradient(circle at 20% 0%, rgba(255,255,255,0.12), transparent 55%),
-                  radial-gradient(circle at 80% 120%, rgba(197,164,109,0.45), transparent 60%);
+                  radial-gradient(circle at 80% 120%, rgba(197,164,109,0.5), transparent 60%);
       box-shadow: 0 10px 30px rgba(0,0,0,0.7);
       display: flex;
       align-items: center;
@@ -110,61 +110,40 @@
     }
 
     .nav-title {
-      font-size: 16px;
+      font-size: 14px;
       letter-spacing: 3px;
       text-transform: uppercase;
       font-weight: 500;
     }
 
-    .nav-links {
-      display: flex;
-      gap: 18px;
-      font-size: 13px;
-      text-transform: uppercase;
+    .nav-link {
+      font-size: 11px;
       letter-spacing: 2px;
-    }
-
-    .nav-links a {
+      text-transform: uppercase;
       color: var(--muted);
       text-decoration: none;
-      position: relative;
-      padding-bottom: 4px;
-      transition: color 0.25s ease;
+      padding-bottom: 3px;
+      border-bottom: 1px solid transparent;
+      transition: color 0.25s ease, border-color 0.25s ease;
     }
 
-    .nav-links a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 0;
-      height: 1px;
-      background: var(--accent);
-      transition: width 0.25s ease;
-    }
-
-    .nav-links a:hover {
+    .nav-link:hover {
       color: var(--text);
-    }
-
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-
-    /* Layout */
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 110px 20px 80px;
-    }
-
-    section {
-      margin-bottom: 80px;
+      border-bottom-color: var(--accent);
     }
 
     /* Hero */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 20px 40px;
+    }
+
     .hero {
-      min-height: calc(100vh - 110px);
+      width: 100%;
+      max-width: 900px;
       display: grid;
       grid-template-columns: minmax(0, 3fr) minmax(0, 2.5fr);
       gap: 40px;
@@ -174,7 +153,22 @@
     @media (max-width: 860px) {
       .hero {
         grid-template-columns: 1fr;
-        min-height: auto;
+        text-align: left;
+        gap: 32px;
+      }
+    }
+
+    .hero-left {
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.9s ease-out forwards;
+      animation-delay: 0.1s;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
     }
 
@@ -184,11 +178,11 @@
       gap: 8px;
       padding: 6px 14px;
       border-radius: var(--radius-pill);
-      border: 1px solid rgba(197,164,109,0.4);
-      background: radial-gradient(circle at 0 0, rgba(197,164,109,0.13), transparent 65%);
-      font-size: 11px;
+      border: 1px solid rgba(197,164,109,0.35);
+      background: radial-gradient(circle at 0 0, rgba(197,164,109,0.12), transparent 70%);
+      font-size: 10px;
       text-transform: uppercase;
-      letter-spacing: 2.1px;
+      letter-spacing: 2.3px;
       color: var(--accent);
       margin-bottom: 18px;
     }
@@ -198,14 +192,14 @@
       height: 6px;
       border-radius: 999px;
       background: var(--accent);
-      box-shadow: 0 0 14px rgba(197,164,109,0.9);
+      box-shadow: 0 0 12px rgba(197,164,109,0.9);
     }
 
     .hero-title {
       font-family: "Playfair Display", "Times New Roman", serif;
-      font-size: clamp(40px, 4.3vw, 56px);
+      font-size: clamp(38px, 4.4vw, 56px);
       line-height: 1.05;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     .hero-title span {
@@ -213,69 +207,54 @@
     }
 
     .hero-subtitle {
-      font-size: 16px;
+      font-size: 15px;
       line-height: 1.7;
       color: var(--muted);
-      max-width: 34rem;
+      max-width: 30rem;
       margin-bottom: 26px;
     }
 
-    .hero-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 18px;
-      margin-bottom: 30px;
+    .tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 24px;
     }
 
-    @media (max-width: 640px) {
-      .hero-grid {
-        grid-template-columns: repeat(2, minmax(0,1fr));
-      }
-    }
-
-    .pill {
-      border-radius: var(--radius-pill);
-      border: 1px solid var(--border-subtle);
-      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(197,164,109,0.08));
+    .tag {
       font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 1.8px;
-      padding: 9px 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      letter-spacing: 1.9px;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(9,11,17,0.8);
       color: var(--muted);
-      white-space: nowrap;
     }
 
-    .hero-footer {
-      font-size: 13px;
+    .hero-note {
+      font-size: 12px;
       color: var(--muted);
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    .hero-divider {
-      width: 60px;
-      height: 1px;
-      background: linear-gradient(to right, var(--accent), transparent);
       opacity: 0.8;
     }
 
-    /* Hero Card */
+    /* Card on right */
     .hero-card {
-      border-radius: var(--radius-lg);
+      border-radius: 24px;
       border: 1px solid var(--border-subtle);
-      background: radial-gradient(circle at 0% 0%, rgba(197,164,109,0.15), transparent 60%),
-                  radial-gradient(circle at 120% 0%, rgba(255,255,255,0.09), transparent 60%),
-                  rgba(5,6,10,0.94);
+      background:
+        radial-gradient(circle at 0% 0%, rgba(197,164,109,0.22), transparent 55%),
+        radial-gradient(circle at 100% 0%, rgba(255,255,255,0.07), transparent 55%),
+        linear-gradient(145deg, rgba(5,6,10,0.96), rgba(9,11,16,0.98));
       box-shadow: var(--shadow-soft);
-      padding: 26px 26px 30px;
+      padding: 24px 22px 26px;
       position: relative;
       overflow: hidden;
-      backdrop-filter: blur(var(--blur));
+      backdrop-filter: blur(18px);
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.9s ease-out forwards;
+      animation-delay: 0.2s;
     }
 
     .hero-card::before {
@@ -291,292 +270,149 @@
       opacity: 1;
     }
 
-    .card-label {
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 12px;
-    }
-
-    .metric-row {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-
-    .metric-label {
-      font-size: 12px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 1.7px;
-    }
-
-    .metric-value {
-      font-size: 26px;
-      font-weight: 500;
-      color: var(--accent);
-    }
-
-    .metric-caption {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .card-divider {
-      margin: 18px 0;
-      height: 1px;
-      background: linear-gradient(to right, rgba(255,255,255,0.1), transparent);
-    }
-
-    .principles {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 12px;
-      margin-top: 10px;
-    }
-
-    @media (max-width: 640px) {
-      .principles {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .principle-item {
-      font-size: 13px;
-      color: var(--muted);
-      padding: 10px 11px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.04);
-      background: radial-gradient(circle at top left, rgba(197,164,109,0.12), transparent 70%);
-    }
-
-    .principle-item strong {
-      color: var(--text);
-      display: block;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1.6px;
-      margin-bottom: 4px;
-    }
-
     .badge {
       position: absolute;
-      top: 20px;
-      right: 22px;
-      font-size: 10px;
+      top: 18px;
+      right: 18px;
+      font-size: 9px;
       letter-spacing: 2px;
       text-transform: uppercase;
       padding: 6px 11px;
       border-radius: var(--radius-pill);
       border: 1px solid rgba(197,164,109,0.7);
-      background: rgba(5,6,10,0.95);
+      background: rgba(5,6,10,0.96);
       color: var(--accent);
     }
 
-    /* Content Sections */
-    .section-heading {
-      font-family: "Playfair Display", "Times New Roman", serif;
-      font-size: 26px;
-      margin-bottom: 8px;
-    }
-
-    .section-kicker {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-
-    .section-intro {
-      font-size: 15px;
-      color: var(--muted);
-      max-width: 540px;
-      line-height: 1.8;
-      margin-bottom: 26px;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 20px;
-    }
-
-    @media (max-width: 860px) {
-      .grid-3 {
-        grid-template-columns: repeat(2, minmax(0,1fr));
-      }
-    }
-
-    @media (max-width: 640px) {
-      .grid-3 {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .card {
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-subtle);
-      background: linear-gradient(145deg, rgba(9,11,17,0.95), rgba(6,7,11,0.98));
-      padding: 20px 18px 22px;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease, background 0.35s ease;
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at top left, rgba(197,164,109,0.28), transparent 60%);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      pointer-events: none;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 18px 50px rgba(0,0,0,0.9);
-      border-color: rgba(197,164,109,0.6);
-    }
-
-    .card:hover::before {
-      opacity: 1;
-    }
-
-    .card-emoji {
-      font-size: 22px;
-      margin-bottom: 10px;
-    }
-
-    .card-title {
-      font-size: 15px;
-      font-weight: 500;
-      margin-bottom: 6px;
-    }
-
-    .card-body {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    /* Contact */
-    .contact {
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-subtle);
-      background: radial-gradient(circle at 0 0, var(--accent-soft), transparent 65%),
-                  linear-gradient(135deg, rgba(4,5,10,0.96), rgba(9,11,17,0.98));
-      padding: 24px 22px 26px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .contact-line {
-      font-size: 14px;
-      color: var(--muted);
-    }
-
-    .contact-email {
-      font-size: 16px;
-      font-weight: 500;
-      letter-spacing: 0.6px;
-      color: var(--text);
-    }
-
-    .contact-email a {
-      color: var(--text);
-      text-decoration: none;
-      border-bottom: 1px solid rgba(197,164,109,0.6);
-      padding-bottom: 2px;
-    }
-
-    .contact-email a:hover {
-      color: var(--accent);
-      border-bottom-color: var(--accent);
-    }
-
-    .tagline {
-      font-size: 13px;
-      color: var(--muted);
-      font-style: italic;
-      margin-top: 6px;
-    }
-
-    /* Footer */
-    footer {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 10px 20px 40px;
-      font-size: 12px;
-      color: var(--muted);
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      border-top: 1px solid rgba(255,255,255,0.04);
-    }
-
-    .footer-right {
-      opacity: 0.8;
-    }
-
-    /* Scroll cue */
-    .scroll-cue {
-      position: absolute;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
+    .card-label {
       font-size: 11px;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .keywords {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      opacity: 0.8;
+      gap: 10px;
+      margin-top: 4px;
     }
 
-    .scroll-cue-icon {
-      width: 14px;
-      height: 24px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.5);
+    .keyword-row {
       display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      padding-top: 4px;
-      overflow: hidden;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--muted);
     }
 
-    .scroll-cue-dot {
-      width: 4px;
-      height: 4px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.8);
-      animation: scrollDot 1.4s ease-in-out infinite;
+    .keyword-label {
+      text-transform: uppercase;
+      letter-spacing: 1.8px;
+      font-size: 11px;
     }
 
-    @keyframes scrollDot {
-      0% { transform: translateY(0); opacity: 1; }
-      60% { transform: translateY(10px); opacity: 0; }
-      100% { transform: translateY(0); opacity: 0; }
+    .keyword-value {
+      font-size: 14px;
+      color: var(--text);
     }
 
-    /* Reveal on scroll */
-    .reveal {
+    .divider-soft {
+      height: 1px;
+      margin: 16px 0 14px;
+      background: linear-gradient(to right, rgba(255,255,255,0.14), transparent);
+    }
+
+    .three-words {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0.9;
+    }
+
+    @media (max-width: 480px) {
+      .three-words {
+        flex-direction: column;
+        gap: 6px;
+      }
+    }
+
+    /* About / Contact strip */
+    .lower-section {
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto 30px;
+      padding: 0 20px;
       opacity: 0;
-      transform: translateY(12px);
-      transition: opacity 0.65s ease, transform 0.65s ease;
+      transform: translateY(16px);
+      animation: fadeUp 0.9s ease-out forwards;
+      animation-delay: 0.35s;
     }
 
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
+    .strip {
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: linear-gradient(135deg, rgba(5,6,10,0.96), rgba(9,11,16,0.98));
+      padding: 16px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .strip-left {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .strip-left span {
+      color: var(--accent);
+    }
+
+    .strip-right {
+      font-size: 14px;
+    }
+
+    .strip-right a {
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(197,164,109,0.7);
+      padding-bottom: 2px;
+      transition: color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .strip-right a:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    /* Footer */
+    footer {
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto 24px;
+      padding: 0 20px;
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      opacity: 0.7;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      padding-top: 10px;
+    }
+
+    @media (max-width: 640px) {
+      footer {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -592,218 +428,90 @@
           <div class="nav-mark">LM</div>
           <div class="nav-title">Legacy Made Ventures</div>
         </div>
-        <nav class="nav-links">
-          <a href="#about">About</a>
-          <a href="#focus">Focus</a>
-          <a href="#structure">Structure</a>
-          <a href="#contact">Contact</a>
-        </nav>
+        <a href="#contact" class="nav-link">Contact</a>
       </div>
     </header>
 
+    <!-- Main content -->
     <main>
-      <!-- Hero -->
       <section class="hero">
-        <div class="hero-left reveal">
+        <div class="hero-left">
           <div class="eyebrow">
             <div class="eyebrow-dot"></div>
             Private Holding Company
           </div>
+
           <h1 class="hero-title">
-            Quietly building<br>
+            Quietly constructing<br>
             <span>enduring value.</span>
           </h1>
+
           <p class="hero-subtitle">
-            Legacy Made Ventures is a privately held entity focused on long-term value creation through real estate ownership, disciplined asset protection, and strategic investments.
+            A private vehicle for long-term ownership and preservation-first decision making.
           </p>
 
-          <div class="hero-grid">
-            <div class="pill">Real Estate Holdings</div>
-            <div class="pill">Asset Protection</div>
-            <div class="pill">Long-Term Planning</div>
+          <div class="tags-row">
+            <div class="tag">Real assets</div>
+            <div class="tag">Risk-aware</div>
+            <div class="tag">Long horizon</div>
           </div>
 
-          <div class="hero-footer">
-            <div class="hero-divider"></div>
-            <span>Acquire intelligently. Operate efficiently. Build with intention.</span>
+          <div class="hero-note">
+            Designed to hold, protect, and compound — not to advertise.
           </div>
         </div>
 
-        <aside class="hero-card reveal">
-          <div class="badge">Long-Term Orientation</div>
-          <div class="card-label">Operating Mandate</div>
+        <aside class="hero-card">
+          <div class="badge">Long-Term View</div>
+          <div class="card-label">Orientation</div>
 
-          <div class="metric-row">
-            <div>
-              <div class="metric-label">Time Horizon</div>
-              <div class="metric-value">10+ yrs</div>
-              <div class="metric-caption">Decisions made on generational timelines, not quarterly ones.</div>
+          <div class="keywords">
+            <div class="keyword-row">
+              <span class="keyword-label">Horizon</span>
+              <span class="keyword-value">10+ years</span>
+            </div>
+            <div class="keyword-row">
+              <span class="keyword-label">Focus</span>
+              <span class="keyword-value">Preservation · Cash flow</span>
+            </div>
+            <div class="keyword-row">
+              <span class="keyword-label">Posture</span>
+              <span class="keyword-value">Quiet · Deliberate</span>
             </div>
           </div>
 
-          <div class="card-divider"></div>
+          <div class="divider-soft"></div>
 
-          <div class="principles">
-            <div class="principle-item">
-              <strong>01 · Preservation First</strong>
-              Every structure, agreement, and allocation is designed to protect downside before pursuing upside.
-            </div>
-            <div class="principle-item">
-              <strong>02 · Thoughtful Leverage</strong>
-              Conservative use of debt, with a focus on resiliency through market cycles.
-            </div>
-            <div class="principle-item">
-              <strong>03 · Aligned Incentives</strong>
-              Decisions are evaluated on cash flow, durability, and long-term compounding.
-            </div>
-            <div class="principle-item">
-              <strong>04 · Quiet Execution</strong>
-              Private by design, with a bias toward focus, clarity, and operational excellence.
-            </div>
+          <div class="three-words">
+            <span>Preserve</span>
+            <span>Build</span>
+            <span>Pass Forward</span>
           </div>
         </aside>
       </section>
-
-      <!-- About -->
-      <section id="about" class="reveal">
-        <div class="section-kicker">About</div>
-        <h2 class="section-heading">A private vehicle for long-term ownership</h2>
-        <p class="section-intro">
-          Legacy Made Ventures exists to hold and steward assets with intention.  
-          The focus is not rapid expansion at any cost, but deliberate, well-structured growth built on 
-          sound fundamentals, clear governance, and disciplined risk management.
-        </p>
-      </section>
-
-      <!-- Focus Areas -->
-      <section id="focus" class="reveal">
-        <div class="section-kicker">Focus Areas</div>
-        <h2 class="section-heading">Where we deploy attention and capital</h2>
-        <p class="section-intro">
-          While the mandate is intentionally flexible, the current emphasis centers on real assets and 
-          complementary opportunities that reinforce stability, cash flow, and optionality.
-        </p>
-
-        <div class="grid-3">
-          <div class="card">
-            <div class="card-emoji">🏡</div>
-            <div class="card-title">Residential Real Estate</div>
-            <div class="card-body">
-              Acquisition and stewardship of residential properties in desirable markets,  
-              with a focus on quality, durability, and guest-ready experiences where appropriate.
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-emoji">📈</div>
-            <div class="card-title">Income & Cash Flow</div>
-            <div class="card-body">
-              Preference for assets that generate predictable cash flow, support self-funding growth, 
-              and perform across a range of economic environments.
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-emoji">🛡️</div>
-            <div class="card-title">Risk & Structure</div>
-            <div class="card-body">
-              Emphasis on entity design, liability separation, and thoughtful layering of protections 
-              to safeguard both current operations and future compounding.
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Structure -->
-      <section id="structure" class="reveal">
-        <div class="section-kicker">Approach</div>
-        <h2 class="section-heading">Structured for clarity and protection</h2>
-        <p class="section-intro">
-          The underlying philosophy is simple: assets should sit in the right entities, with clear separation 
-          of roles, risks, and outcomes. Form follows function — and protection.
-        </p>
-
-        <div class="grid-3">
-          <div class="card">
-            <div class="card-emoji">🏢</div>
-            <div class="card-title">Dedicated Entities</div>
-            <div class="card-body">
-              Properties and ventures may be held in dedicated LLCs or structures designed to ring-fence risk 
-              while maintaining operational control and simplicity.
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-emoji">⚖️</div>
-            <div class="card-title">Compliance Mindset</div>
-            <div class="card-body">
-              Alignment with local regulations, appropriate insurance coverage, and ongoing review of 
-              structural decisions as circumstances evolve.
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-emoji">🧭</div>
-            <div class="card-title">Long-View Decisions</div>
-            <div class="card-body">
-              Evaluation of each decision on its ability to protect, enhance, or extend the long-term 
-              stability and optionality of the overall portfolio.
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Contact -->
-      <section id="contact" class="reveal">
-        <div class="section-kicker">Contact</div>
-        <h2 class="section-heading">Formal correspondence & inquiries</h2>
-
-        <div class="contact">
-          <div class="contact-line">
-            For formal correspondence, documentation, or vetted opportunities, please use the following channel:
-          </div>
-          <div class="contact-email">
-            <a href="mailto:info@legacymadeventures.com">info@legacymadeventures.com</a>
-          </div>
-          <div class="tagline">
-            Legacy is not something you find — it’s something you construct, protect, and pass forward.
-          </div>
-        </div>
-      </section>
     </main>
 
-    <!-- Scroll cue -->
-    <div class="scroll-cue">
-      <span>Scroll</span>
-      <div class="scroll-cue-icon">
-        <div class="scroll-cue-dot"></div>
+    <!-- Lower strip (About / Contact) -->
+    <section class="lower-section" id="contact">
+      <div class="strip">
+        <div class="strip-left">
+          <span>Legacy Made Ventures</span> operates as a private, non-soliciting holding entity.
+        </div>
+        <div class="strip-right">
+          <a href="mailto:info@legacymadeventures.com">info@legacymadeventures.com</a>
+        </div>
       </div>
-    </div>
+    </section>
 
+    <!-- Footer -->
     <footer>
-      <div>© <span id="year"></span> Legacy Made Ventures. All rights reserved.</div>
-      <div class="footer-right">Private holding company · Long-term orientation</div>
+      <div>© <span id="year"></span> Legacy Made Ventures.</div>
+      <div>Private holding · Not open to outside investment.</div>
     </footer>
   </div>
 
   <script>
-    // Dynamic year
     document.getElementById("year").textContent = new Date().getFullYear();
-
-    // Reveal on scroll
-    const revealEls = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.18 }
-    );
-    revealEls.forEach(el => observer.observe(el));
   </script>
 </body>
 </html>
