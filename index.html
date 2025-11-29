@@ -4,24 +4,21 @@
   <meta charset="UTF-8" />
   <title>Legacy Made Ventures</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Legacy Made Ventures – a private holding company with a long-term, preservation-first philosophy.">
+  <meta name="description" content="Legacy Made Ventures – a private holding company.">
 
-  <!-- Luxury serif + clean sans -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
     :root {
       --bg: #050608;
-      --bg-alt: #090b10;
       --accent: #c5a46d;
-      --accent-soft: rgba(197,164,109,0.35);
-      --text: #f5f5f5;
+      --text: #f6f6f6;
       --muted: #9a9ea8;
-      --border-subtle: rgba(255,255,255,0.08);
-      --radius-pill: 999px;
-      --shadow-soft: 0 24px 70px rgba(0, 0, 0, 0.85);
+      --border-subtle: rgba(255,255,255,0.12);
+      --radius: 999px;
     }
 
     * {
@@ -38,18 +35,18 @@
     body {
       font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:
-        radial-gradient(circle at top left, #202231 0, #050608 50%, #020308 100%);
+        radial-gradient(circle at top left, #1f2234 0, #050608 50%, #020308 100%);
       color: var(--text);
       -webkit-font-smoothing: antialiased;
+      overflow: hidden;
       position: relative;
-      overflow-x: hidden;
     }
 
     .noise-overlay {
       pointer-events: none;
       position: fixed;
       inset: 0;
-      opacity: 0.10;
+      opacity: 0.12;
       mix-blend-mode: soft-light;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='noStitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.7'/%3E%3C/svg%3E");
       z-index: 1;
@@ -61,108 +58,18 @@
       z-index: 2;
       display: flex;
       flex-direction: column;
-    }
-
-    /* Top bar */
-    .nav {
-      position: fixed;
-      inset: 0 0 auto 0;
-      height: 64px;
-      display: flex;
       align-items: center;
       justify-content: center;
-      backdrop-filter: blur(18px);
-      background: linear-gradient(to bottom, rgba(5,6,10,0.96), rgba(5,6,10,0.88), transparent);
-      border-bottom: 1px solid var(--border-subtle);
-      z-index: 10;
+      padding: 24px;
     }
 
-    .nav-inner {
-      width: 100%;
-      max-width: 1100px;
-      padding: 0 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .nav-mark {
-      width: 28px;
-      height: 28px;
-      border-radius: 11px;
-      border: 1px solid rgba(255,255,255,0.18);
-      background: radial-gradient(circle at 20% 0%, rgba(255,255,255,0.12), transparent 55%),
-                  radial-gradient(circle at 80% 120%, rgba(197,164,109,0.5), transparent 60%);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
-
-    .nav-title {
-      font-size: 14px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      font-weight: 500;
-    }
-
-    .nav-link {
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      padding-bottom: 3px;
-      border-bottom: 1px solid transparent;
-      transition: color 0.25s ease, border-color 0.25s ease;
-    }
-
-    .nav-link:hover {
-      color: var(--text);
-      border-bottom-color: var(--accent);
-    }
-
-    /* Hero */
-    main {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 80px 20px 40px;
-    }
-
-    .hero {
-      width: 100%;
-      max-width: 900px;
-      display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2.5fr);
-      gap: 40px;
-      align-items: center;
-    }
-
-    @media (max-width: 860px) {
-      .hero {
-        grid-template-columns: 1fr;
-        text-align: left;
-        gap: 32px;
-      }
-    }
-
-    .hero-left {
+    .center-block {
+      text-align: center;
+      max-width: 720px;
       opacity: 0;
       transform: translateY(16px);
       animation: fadeUp 0.9s ease-out forwards;
-      animation-delay: 0.1s;
+      animation-delay: 0.15s;
     }
 
     @keyframes fadeUp {
@@ -172,246 +79,150 @@
       }
     }
 
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 14px;
-      border-radius: var(--radius-pill);
-      border: 1px solid rgba(197,164,109,0.35);
-      background: radial-gradient(circle at 0 0, rgba(197,164,109,0.12), transparent 70%);
-      font-size: 10px;
+    .name {
+      font-family: "Playfair Display", "Times New Roman", serif;
+      font-size: clamp(32px, 4vw, 46px);
+      letter-spacing: 0.26em;
       text-transform: uppercase;
-      letter-spacing: 2.3px;
-      color: var(--accent);
       margin-bottom: 18px;
     }
 
-    .eyebrow-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: var(--accent);
-      box-shadow: 0 0 12px rgba(197,164,109,0.9);
-    }
-
-    .hero-title {
-      font-family: "Playfair Display", "Times New Roman", serif;
-      font-size: clamp(38px, 4.4vw, 56px);
-      line-height: 1.05;
-      margin-bottom: 16px;
-    }
-
-    .hero-title span {
-      color: var(--accent);
-    }
-
-    .hero-subtitle {
-      font-size: 15px;
-      line-height: 1.7;
-      color: var(--muted);
-      max-width: 30rem;
-      margin-bottom: 26px;
-    }
-
-    .tags-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 24px;
-    }
-
-    .tag {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1.9px;
-      padding: 6px 14px;
-      border-radius: var(--radius-pill);
-      border: 1px solid rgba(255,255,255,0.06);
-      background: rgba(9,11,17,0.8);
-      color: var(--muted);
-    }
-
-    .hero-note {
-      font-size: 12px;
-      color: var(--muted);
+    .divider {
+      width: 72px;
+      height: 1px;
+      margin: 0 auto 22px;
+      background: linear-gradient(to right, var(--accent), transparent);
       opacity: 0.8;
     }
 
-    /* Card on right */
-    .hero-card {
-      border-radius: 24px;
-      border: 1px solid var(--border-subtle);
-      background:
-        radial-gradient(circle at 0% 0%, rgba(197,164,109,0.22), transparent 55%),
-        radial-gradient(circle at 100% 0%, rgba(255,255,255,0.07), transparent 55%),
-        linear-gradient(145deg, rgba(5,6,10,0.96), rgba(9,11,16,0.98));
-      box-shadow: var(--shadow-soft);
-      padding: 24px 22px 26px;
+    .tagline-wrapper {
+      font-size: 16px;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
       position: relative;
-      overflow: hidden;
-      backdrop-filter: blur(18px);
-      opacity: 0;
-      transform: translateY(16px);
-      animation: fadeUp 0.9s ease-out forwards;
-      animation-delay: 0.2s;
     }
 
-    .hero-card::before {
+    .tagline-label {
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      font-size: 10px;
+      color: rgba(154,158,168,0.9);
+    }
+
+    .tagline-main {
+      display: block;
+      margin-top: 8px;
+      font-size: 17px;
+      white-space: nowrap;
+    }
+
+    .tagline-word {
+      color: var(--accent);
+      margin-left: 4px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .tagline-word::after {
       content: "";
       position: absolute;
-      inset: -40%;
-      background: radial-gradient(circle at 0 0, rgba(255,255,255,0.06), transparent 60%);
-      opacity: 0;
-      transition: opacity 0.8s ease-out;
+      left: 0;
+      bottom: -4px;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, var(--accent), transparent);
+      opacity: 0.7;
     }
 
-    .hero-card:hover::before {
+    .tagline-wrapper:hover .tagline-word::after {
       opacity: 1;
     }
 
-    .badge {
-      position: absolute;
-      top: 18px;
-      right: 18px;
-      font-size: 9px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      padding: 6px 11px;
-      border-radius: var(--radius-pill);
-      border: 1px solid rgba(197,164,109,0.7);
-      background: rgba(5,6,10,0.96);
-      color: var(--accent);
+    .tagline-wrapper:hover .tagline-word {
+      filter: brightness(1.1);
     }
 
-    .card-label {
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
-
-    .keywords {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 4px;
-    }
-
-    .keyword-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 12px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .keyword-label {
-      text-transform: uppercase;
-      letter-spacing: 1.8px;
-      font-size: 11px;
-    }
-
-    .keyword-value {
-      font-size: 14px;
-      color: var(--text);
-    }
-
-    .divider-soft {
-      height: 1px;
-      margin: 16px 0 14px;
-      background: linear-gradient(to right, rgba(255,255,255,0.14), transparent);
-    }
-
-    .three-words {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-      opacity: 0.9;
-    }
-
-    @media (max-width: 480px) {
-      .three-words {
-        flex-direction: column;
-        gap: 6px;
-      }
-    }
-
-    /* About / Contact strip */
-    .lower-section {
-      max-width: 900px;
-      width: 100%;
-      margin: 0 auto 30px;
-      padding: 0 20px;
+    .tagline-word.fade-out {
       opacity: 0;
-      transform: translateY(16px);
-      animation: fadeUp 0.9s ease-out forwards;
-      animation-delay: 0.35s;
+      transform: translateY(-6px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
-    .strip {
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.06);
-      background: linear-gradient(135deg, rgba(5,6,10,0.96), rgba(9,11,16,0.98));
-      padding: 16px 18px;
-      display: flex;
-      flex-wrap: wrap;
+    .tagline-word.fade-in {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 11px;
+      color: rgba(154,158,168,0.75);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .hint span {
+      color: rgba(197,164,109,0.8);
+    }
+
+    /* Contact pill */
+    .contact {
+      position: fixed;
+      left: 50%;
+      bottom: 32px;
+      transform: translateX(-50%);
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: radial-gradient(circle at 0 0, rgba(197,164,109,0.18), transparent 70%),
+                  rgba(7,8,12,0.96);
+      display: inline-flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .strip-left {
+      gap: 10px;
       font-size: 12px;
       color: var(--muted);
+      backdrop-filter: blur(16px);
+      opacity: 0;
+      transform-origin: center;
+      animation: fadeUp 0.9s ease-out forwards;
+      animation-delay: 0.45s;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.85);
     }
 
-    .strip-left span {
-      color: var(--accent);
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 16px rgba(197,164,109,0.9);
     }
 
-    .strip-right {
-      font-size: 14px;
-    }
-
-    .strip-right a {
+    .contact a {
       color: var(--text);
       text-decoration: none;
       border-bottom: 1px solid rgba(197,164,109,0.7);
-      padding-bottom: 2px;
+      padding-bottom: 1px;
       transition: color 0.25s ease, border-color 0.25s ease;
     }
 
-    .strip-right a:hover {
+    .contact a:hover {
       color: var(--accent);
       border-bottom-color: var(--accent);
     }
 
-    /* Footer */
-    footer {
-      max-width: 900px;
-      width: 100%;
-      margin: 0 auto 24px;
-      padding: 0 20px;
-      font-size: 11px;
-      color: var(--muted);
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      opacity: 0.7;
-      border-top: 1px solid rgba(255,255,255,0.04);
-      padding-top: 10px;
-    }
-
-    @media (max-width: 640px) {
-      footer {
-        flex-direction: column;
+    @media (max-width: 480px) {
+      .tagline-main {
+        font-size: 15px;
+        white-space: normal;
+      }
+      .contact {
+        bottom: 20px;
+        padding: 9px 14px;
+        font-size: 11px;
       }
     }
   </style>
@@ -421,97 +232,65 @@
   <div class="noise-overlay"></div>
 
   <div class="page">
-    <!-- Nav -->
-    <header class="nav">
-      <div class="nav-inner">
-        <div class="nav-brand">
-          <div class="nav-mark">LM</div>
-          <div class="nav-title">Legacy Made Ventures</div>
-        </div>
-        <a href="#contact" class="nav-link">Contact</a>
-      </div>
-    </header>
+    <div class="center-block">
+      <div class="name">LEGACY MADE VENTURES</div>
+      <div class="divider"></div>
 
-    <!-- Main content -->
-    <main>
-      <section class="hero">
-        <div class="hero-left">
-          <div class="eyebrow">
-            <div class="eyebrow-dot"></div>
-            Private Holding Company
-          </div>
-
-          <h1 class="hero-title">
-            Quietly constructing<br>
-            <span>enduring value.</span>
-          </h1>
-
-          <p class="hero-subtitle">
-            A private vehicle for long-term ownership and preservation-first decision making.
-          </p>
-
-          <div class="tags-row">
-            <div class="tag">Real assets</div>
-            <div class="tag">Risk-aware</div>
-            <div class="tag">Long horizon</div>
-          </div>
-
-          <div class="hero-note">
-            Designed to hold, protect, and compound — not to advertise.
-          </div>
-        </div>
-
-        <aside class="hero-card">
-          <div class="badge">Long-Term View</div>
-          <div class="card-label">Orientation</div>
-
-          <div class="keywords">
-            <div class="keyword-row">
-              <span class="keyword-label">Horizon</span>
-              <span class="keyword-value">10+ years</span>
-            </div>
-            <div class="keyword-row">
-              <span class="keyword-label">Focus</span>
-              <span class="keyword-value">Preservation · Cash flow</span>
-            </div>
-            <div class="keyword-row">
-              <span class="keyword-label">Posture</span>
-              <span class="keyword-value">Quiet · Deliberate</span>
-            </div>
-          </div>
-
-          <div class="divider-soft"></div>
-
-          <div class="three-words">
-            <span>Preserve</span>
-            <span>Build</span>
-            <span>Pass Forward</span>
-          </div>
-        </aside>
-      </section>
-    </main>
-
-    <!-- Lower strip (About / Contact) -->
-    <section class="lower-section" id="contact">
-      <div class="strip">
-        <div class="strip-left">
-          <span>Legacy Made Ventures</span> operates as a private, non-soliciting holding entity.
-        </div>
-        <div class="strip-right">
-          <a href="mailto:info@legacymadeventures.com">info@legacymadeventures.com</a>
+      <div class="tagline-wrapper" id="tagline">
+        <div class="tagline-label">Orientation</div>
+        <div class="tagline-main">
+          Quietly constructing
+          <span class="tagline-word" id="tagline-word">enduring value</span>
         </div>
       </div>
-    </section>
 
-    <!-- Footer -->
-    <footer>
-      <div>© <span id="year"></span> Legacy Made Ventures.</div>
-      <div>Private holding · Not open to outside investment.</div>
-    </footer>
+      <div class="hint">
+        <span>Tip</span> · Click the tagline or wait to see more.
+      </div>
+    </div>
+
+    <div class="contact" id="contact">
+      <div class="dot"></div>
+      <span>Formal correspondence:</span>
+      <a href="mailto:info@legacymadeventures.com">info@legacymadeventures.com</a>
+    </div>
   </div>
 
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+    const phrases = [
+      "enduring value",
+      "real assets",
+      "quiet compounding",
+      "preserved optionality",
+      "long-horizon cash flow"
+    ];
+
+    let index = 0;
+    const wordEl = document.getElementById("tagline-word");
+    const wrapper = document.getElementById("tagline");
+
+    function rotatePhrase() {
+      const next = (index + 1) % phrases.length;
+      wordEl.classList.remove("fade-in");
+      wordEl.classList.add("fade-out");
+
+      setTimeout(() => {
+        wordEl.textContent = phrases[next];
+        wordEl.classList.remove("fade-out");
+        wordEl.classList.add("fade-in");
+        index = next;
+      }, 260);
+    }
+
+    // auto-rotate
+    let interval = setInterval(rotatePhrase, 3200);
+
+    // click to advance
+    wrapper.addEventListener("click", () => {
+      clearInterval(interval);
+      rotatePhrase();
+      interval = setInterval(rotatePhrase, 3200);
+    });
   </script>
 </body>
 </html>
