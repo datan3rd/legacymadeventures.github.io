@@ -2,465 +2,535 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Legacy Made Ventures | Private Holdings</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-    
+    <title>LEGACY MADE VENTURES | Global Holdings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#050505">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Manrope:wght@200;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Manrope:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --c-dark: #030303;
-            --c-gold: #D4AF37;
-            --c-white: #EAEAEA;
+            --bg-color: #050505;
+            --text-main: #EAEAEA;
+            --text-muted: #666666;
+            --accent-gold: #D4AF37;
+            --grid-line: rgba(255, 255, 255, 0.03);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; } /* Hide default cursor */
+        /* RESET & BASE */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        
+        html.lenis { height: auto; } 
+        .lenis.lenis-smooth { scroll-behavior: auto; } 
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; } 
+        .lenis.lenis-stopped { overflow: hidden; } 
+        .lenis.lenis-scrolling iframe { pointer-events: none; } 
 
         body {
-            background-color: var(--c-dark);
-            color: var(--c-white);
+            background-color: var(--bg-color);
+            color: var(--text-main);
             font-family: 'Manrope', sans-serif;
-            overflow: hidden; /* No scroll for this landing experience */
+            overflow-x: hidden;
             width: 100vw;
-            height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* --- CANVAS --- */
-        #webgl {
+        /* FILM GRAIN OVERLAY - The "Texture" of money */
+        .noise {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 900;
+            opacity: 0.05;
+            background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noise"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noise)" opacity="1"/%3E%3C/svg%3E');
+        }
+
+        /* WEBGL CANVAS */
+        #gl {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            opacity: 0; /* Fade in handled by JS */
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
             transition: opacity 2s ease;
         }
 
-        /* --- UI LAYER --- */
-        .ui-layer {
-            position: relative;
-            z-index: 2;
-            width: 100%;
-            height: 100%;
-            pointer-events: none; /* Let clicks pass through to canvas */
+        /* --- UI GRID SYSTEM --- */
+        .grid-frame {
+            position: fixed;
+            inset: 0;
+            z-index: 10;
+            pointer-events: none;
+            padding: 3rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 4vw;
         }
+        
+        @media (max-width: 768px) { .grid-frame { padding: 1.5rem; } }
 
-        /* Header */
-        header {
+        .line {
+            position: absolute;
+            background: var(--grid-line);
+        }
+        .line-h { width: 100%; height: 1px; left: 0; }
+        .line-v { height: 100%; width: 1px; top: 0; }
+        .top { top: 3rem; }
+        .bottom { bottom: 3rem; }
+        .left { left: 3rem; }
+        .right { right: 3rem; }
+
+        /* NAV */
+        nav {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             mix-blend-mode: exclusion;
         }
-
-        .brand {
-            font-family: 'Cormorant Garamond', serif;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-size: 1.2rem;
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-
-        .meta {
-            text-align: right;
-            font-size: 0.75rem;
-            color: rgba(255,255,255,0.6);
-            line-height: 1.5;
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-
-        /* Center Content */
-        .hero {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            width: 100%;
-            mix-blend-mode: difference; /* Expensive look */
-        }
-
-        .hero h1 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(3rem, 8vw, 7rem);
-            font-weight: 300;
-            line-height: 0.9;
-            letter-spacing: -0.02em;
-            overflow: hidden;
-            display: inline-block;
-        }
-
-        .hero h1 span {
-            display: inline-block;
-            transform: translateY(110%); /* Start hidden */
-            background: linear-gradient(180deg, #fff 0%, #aaa 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .tagline {
-            margin-top: 2rem;
-            font-size: 0.9rem;
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            opacity: 0;
+            font-weight: 600;
         }
-
-        /* Footer */
-        footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            font-size: 0.8rem;
-            opacity: 0;
-        }
-
-        .coordinate {
+        .status {
+            font-size: 10px;
+            text-align: right;
             font-family: monospace;
-            color: var(--c-gold);
+            color: var(--accent-gold);
         }
 
-        /* --- CUSTOM CURSOR --- */
-        .cursor {
+        /* HERO TYPOGRAPHY */
+        .hero-section {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .title-container {
+            text-align: center;
+            mix-blend-mode: exclusion;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(3rem, 10vw, 9rem);
+            font-weight: 400;
+            line-height: 0.85;
+            text-transform: uppercase;
+            letter-spacing: -0.03em;
+            color: #fff;
+        }
+        
+        h1 span { display: block; overflow: hidden; }
+        h1 .char { 
+            display: inline-block; 
+            transform: translateY(110%); 
+            transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .subtitle {
+            margin-top: 2rem;
+            font-size: 12px;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: var(--accent-gold);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        /* CONTENT SECTION (To demonstrate scroll) */
+        .content-section {
+            height: 100vh; /* Just to allow scroll */
+            display: flex;
+            align-items: flex-end;
+            padding: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+        .manifesto {
+            max-width: 500px;
+            font-size: clamp(1.2rem, 2vw, 1.8rem);
+            line-height: 1.4;
+            color: rgba(255,255,255,0.8);
+        }
+        .manifesto span { color: var(--accent-gold); }
+
+        /* CUSTOM CURSOR */
+        .cursor-ring {
             position: fixed;
-            top: 0; 
-            left: 0;
             width: 40px;
             height: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255,255,255,0.3);
             border-radius: 50%;
-            pointer-events: none;
-            z-index: 999;
             transform: translate(-50%, -50%);
-            transition: transform 0.1s ease, width 0.3s, height 0.3s, background 0.3s;
+            pointer-events: none;
+            z-index: 9999;
+            transition: width 0.3s, height 0.3s, background 0.3s;
             mix-blend-mode: difference;
         }
         .cursor-dot {
             position: fixed;
-            top: 0; left: 0;
             width: 4px;
             height: 4px;
-            background: var(--c-gold);
+            background: var(--accent-gold);
             border-radius: 50%;
-            pointer-events: none;
-            z-index: 1000;
             transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
         }
 
-        /* --- PRELOADER --- */
-        .loader {
+        /* LOADING */
+        .preloader {
             position: fixed;
             inset: 0;
             background: #000;
-            z-index: 100;
+            z-index: 1000;
             display: flex;
-            align-items: center;
             justify-content: center;
-        }
-        .loader-line {
-            width: 0%;
-            height: 1px;
-            background: var(--c-gold);
+            align-items: center;
+            color: var(--accent-gold);
+            font-family: monospace;
+            font-size: 12px;
         }
 
     </style>
 </head>
 <body>
 
-    <div class="loader">
-        <div class="loader-line"></div>
-    </div>
-
-    <div class="cursor"></div>
+    <div class="noise"></div>
+    <div class="cursor-ring"></div>
     <div class="cursor-dot"></div>
 
-    <canvas id="webgl"></canvas>
-
-    <div class="ui-layer">
-        <header>
-            <div class="brand">Legacy Made Ventures</div>
-            <div class="meta">
-                Est. 2024<br>
-                Private Holdings
-            </div>
-        </header>
-
-        <div class="hero">
-            <h1>
-                <span>L</span><span>E</span><span>G</span><span>A</span><span>C</span><span>Y</span>
-                <br>
-                <span style="font-style:italic; font-family:'Manrope'; font-weight:200; font-size: 0.4em; letter-spacing: 0.1em; display:block; margin: 10px 0;">MADE</span>
-                <span>V</span><span>E</span><span>N</span><span>T</span><span>U</span><span>R</span><span>E</span><span>S</span>
-            </h1>
-            <div class="tagline">Constructing Endurance</div>
-        </div>
-
-        <footer>
-            <div class="coordinate">40.7128° N, 74.0060° W</div>
-            <div class="scroll-ind">Scroll for Manifest</div>
-        </footer>
+    <div class="preloader">
+        <span>INITIALIZING ASSETS... <span id="progress">0</span>%</span>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <div class="grid-frame">
+        <div class="line line-h top"></div>
+        <div class="line line-h bottom"></div>
+        <div class="line line-v left"></div>
+        <div class="line line-v right"></div>
+        
+        <nav>
+            <div class="logo">LEGACY MADE</div>
+            <div class="status">
+                SYSTEM: SECURE<br>
+                VENTURES.HOLDINGS
+            </div>
+        </nav>
 
-    <script>
-        // --- 1. SETUP THREE.JS SCENE ---
-        const canvas = document.querySelector('#webgl');
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%;">
+            <div style="font-family: monospace; font-size: 10px; opacity: 0.5;">
+                FIG 1.1 — GLOBAL
+            </div>
+            <div style="font-family: monospace; font-size: 10px; opacity: 0.5;">
+                SCROLL TO DECRYPT
+            </div>
+        </div>
+    </div>
+
+    <canvas id="gl"></canvas>
+
+    <main>
+        <section class="hero-section">
+            <div class="title-container">
+                <h1 id="hero-text">
+                    <span>Legacy</span>
+                    <span style="font-family: 'Manrope'; font-weight: 300; font-style: italic; font-size: 0.5em; letter-spacing: 0.05em; margin: 10px 0;">Is Built In</span>
+                    <span>Silence</span>
+                </h1>
+                <div class="subtitle">Private Equity & Holdings</div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <p class="manifesto">
+                We do not seek attention. We seek <br><span>asymmetric returns</span> over generational timeframes. <br><br>
+                <span style="font-size: 12px; font-family: monospace; opacity: 0.6; display: block; margin-top: 20px;">EST. 2024 — NEW YORK / LONDON / SINGAPORE</span>
+            </p>
+        </section>
+    </main>
+
+    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.150.1/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.150.1/examples/jsm/"
+        }
+      }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+
+        // --- 1. SMOOTH SCROLL (LENIS) ---
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            smooth: true,
+        });
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // --- 2. THREE.JS SCENE SETUP ---
+        const canvas = document.querySelector('#gl');
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: "high-performance" });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setClearColor(0x050505);
+
         const scene = new THREE.Scene();
-        // Fog for depth
-        scene.fog = new THREE.FogExp2(0x030303, 0.002);
+        // Fog to blend particles into darkness
+        scene.fog = new THREE.FogExp2(0x050505, 0.002);
 
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 5;
+        camera.position.z = 20;
+        camera.position.y = 5;
 
-        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Performance optimization
+        // --- 3. POST PROCESSING (THE "EXPENSIVE" GLOW) ---
+        const renderScene = new RenderPass(scene, camera);
+        
+        // Bloom Parameters: Resolution, Strength, Radius, Threshold
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+        bloomPass.strength = 1.2;
+        bloomPass.radius = 0.5;
+        bloomPass.threshold = 0;
 
-        // --- 2. CREATE THE "LIQUID GOLD" OBJECT (GLSL SHADER) ---
-        // Instead of a static image, we use a Vertex and Fragment shader to create
-        // a displacing, liquid-like sphere that reacts to time.
+        const composer = new EffectComposer(renderer);
+        composer.addPass(renderScene);
+        composer.addPass(bloomPass);
 
-        const geometry = new THREE.IcosahedronGeometry(2, 64); // High poly for smoothness
+        // --- 4. PARTICLES SYSTEM (DATA STREAM) ---
+        const particlesGeometry = new THREE.BufferGeometry();
+        const count = 12000;
+        
+        const positions = new Float32Array(count * 3);
+        const randoms = new Float32Array(count);
+        const sizes = new Float32Array(count);
 
-        // Custom Shader Material
-        const material = new THREE.ShaderMaterial({
+        for(let i = 0; i < count; i++) {
+            const i3 = i * 3;
+            // Create a tornado/vortex shape
+            const radius = Math.random() * 20 + 2;
+            const spinAngle = Math.random() * Math.PI * 2;
+            
+            // X and Z based on circle
+            positions[i3] = Math.cos(spinAngle) * radius;
+            positions[i3 + 1] = (Math.random() - 0.5) * 40; // Height spread
+            positions[i3 + 2] = Math.sin(spinAngle) * radius;
+
+            randoms[i] = Math.random();
+            sizes[i] = Math.random();
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        particlesGeometry.setAttribute('aRandom', new THREE.BufferAttribute(randoms, 1));
+        particlesGeometry.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1));
+
+        // Custom Shader for "Liquid Gold" particles
+        const particlesMaterial = new THREE.ShaderMaterial({
             uniforms: {
                 uTime: { value: 0 },
-                uColor: { value: new THREE.Color('#C5A46D') },
-                uMouse: { value: new THREE.Vector2(0, 0) }
+                uColor: { value: new THREE.Color('#D4AF37') },
+                uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
+                uMouse: { value: new THREE.Vector3(0,0,0) }
             },
             vertexShader: `
                 uniform float uTime;
-                uniform vec2 uMouse;
-                varying vec2 vUv;
-                varying vec3 vNormal;
-                varying float vDistort;
-
-                // Simplex Noise function (simplified for brevity)
-                vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-                vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-                vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
-                vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
-                float snoise(vec3 v) {
-                    const vec2  C = vec2(1.0/6.0, 1.0/3.0) ;
-                    const vec4  D = vec4(0.0, 0.5, 1.0, 2.0);
-                    vec3 i  = floor(v + dot(v, C.yyy) );
-                    vec3 x0 = v - i + dot(i, C.xxx) ;
-                    vec3 g = step(x0.yzx, x0.xyz);
-                    vec3 l = 1.0 - g;
-                    vec3 i1 = min( g.xyz, l.zxy );
-                    vec3 i2 = max( g.xyz, l.zxy );
-                    vec3 x1 = x0 - i1 + C.xxx;
-                    vec3 x2 = x0 - i2 + C.yyy;
-                    vec3 x3 = x0 - D.yyy;
-                    i = mod289(i);
-                    vec4 p = permute( permute( permute( 
-                                i.z + vec4(0.0, i1.z, i2.z, 1.0 ))
-                            + i.y + vec4(0.0, i1.y, i2.y, 1.0 )) 
-                            + i.x + vec4(0.0, i1.x, i2.x, 1.0 ));
-                    float n_ = 0.142857142857;
-                    vec3  ns = n_ * D.wyz - D.xzx;
-                    vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
-                    vec4 x_ = floor(j * ns.z);
-                    vec4 y_ = floor(j - 7.0 * x_ );
-                    vec4 x = x_ *ns.x + ns.yyyy;
-                    vec4 y = y_ *ns.x + ns.yyyy;
-                    vec4 h = 1.0 - abs(x) - abs(y);
-                    vec4 b0 = vec4( x.xy, y.xy );
-                    vec4 b1 = vec4( x.zw, y.zw );
-                    vec4 s0 = floor(b0)*2.0 + 1.0;
-                    vec4 s1 = floor(b1)*2.0 + 1.0;
-                    vec4 sh = -step(h, vec4(0.0));
-                    vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;
-                    vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;
-                    vec3 p0 = vec3(a0.xy,h.x);
-                    vec3 p1 = vec3(a0.zw,h.y);
-                    vec3 p2 = vec3(a1.xy,h.z);
-                    vec3 p3 = vec3(a1.zw,h.w);
-                    vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
-                    p0 *= norm.x;
-                    p1 *= norm.y;
-                    p2 *= norm.z;
-                    p3 *= norm.w;
-                    vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
-                    m = m * m;
-                    return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1), 
-                                                dot(p2,x2), dot(p3,x3) ) );
-                }
-
+                uniform float uPixelRatio;
+                uniform vec3 uMouse;
+                attribute float aRandom;
+                attribute float aSize;
+                varying vec3 vColor;
+                
                 void main() {
-                    vUv = uv;
+                    vec4 modelPosition = modelMatrix * vec4(position, 1.0);
                     
-                    // Interaction: Mouse affects noise frequency
-                    float noise = snoise(position * 1.5 + uTime * 0.2 + vec3(uMouse * 0.5, 0.0));
-                    
-                    // Distortion
-                    float distortion = noise * 0.4;
-                    vDistort = distortion;
-                    
-                    vec3 newPos = position + (normal * distortion);
-                    vNormal = normal;
+                    // Rotate the whole system slowly
+                    float angle = uTime * 0.1 * (1.0 - aRandom * 0.5);
+                    float x = modelPosition.x * cos(angle) - modelPosition.z * sin(angle);
+                    float z = modelPosition.x * sin(angle) + modelPosition.z * cos(angle);
+                    modelPosition.x = x;
+                    modelPosition.z = z;
 
-                    gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.0);
+                    // Wave effect
+                    modelPosition.y += sin(uTime + modelPosition.x * 0.5) * 0.5;
+                    
+                    // Mouse interaction (Repulsion)
+                    float dist = distance(uMouse.xy, modelPosition.xy);
+                    float strength = smoothstep(5.0, 0.0, dist);
+                    vec3 dir = normalize(modelPosition.xyz - uMouse);
+                    modelPosition.xyz += dir * strength * 2.0;
+
+                    vec4 viewPosition = viewMatrix * modelPosition;
+                    vec4 projectionPosition = projectionMatrix * viewPosition;
+                    gl_Position = projectionPosition;
+                    
+                    // Size attenuation
+                    gl_PointSize = (12.0 * aSize + 2.0) * uPixelRatio;
+                    gl_PointSize *= (1.0 / - viewPosition.z);
                 }
             `,
             fragmentShader: `
                 uniform vec3 uColor;
-                uniform float uTime;
-                varying vec2 vUv;
-                varying vec3 vNormal;
-                varying float vDistort;
-
+                
                 void main() {
-                    // Base Gold Color
-                    vec3 color = uColor;
+                    // Create a soft circle
+                    float strength = distance(gl_PointCoord, vec2(0.5));
+                    strength = 1.0 - strength;
+                    strength = pow(strength, 3.0);
                     
-                    // Create shadows based on distortion (fake occlusion)
-                    float shadow = 1.0 - smoothstep(-0.2, 0.5, vDistort);
-                    color *= shadow;
-
-                    // Fresnel Effect (Rim lighting) - makes it look like velvet/liquid metal
-                    vec3 viewDir = vec3(0.0, 0.0, 1.0); // Simplified view direction
-                    float fresnel = pow(1.0 - dot(vNormal, viewDir), 3.0);
+                    vec3 color = mix(vec3(0.0), uColor, strength);
                     
-                    // Add rim light
-                    color += vec3(1.0) * fresnel * 0.5;
-
-                    gl_FragColor = vec4(color, 1.0);
+                    gl_FragColor = vec4(color, strength);
                 }
             `,
-            wireframe: false
-        });
-
-        const sphere = new THREE.Mesh(geometry, material);
-        scene.add(sphere);
-
-        // Ambient particles
-        const particlesGeometry = new THREE.BufferGeometry();
-        const particlesCount = 300;
-        const posArray = new Float32Array(particlesCount * 3);
-        
-        for(let i = 0; i < particlesCount * 3; i++) {
-            posArray[i] = (Math.random() - 0.5) * 15;
-        }
-        
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        const particlesMaterial = new THREE.PointsMaterial({
-            size: 0.015,
-            color: 0xD4AF37,
             transparent: true,
-            opacity: 0.6
+            depthWrite: false,
+            blending: THREE.AdditiveBlending
         });
-        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-        scene.add(particlesMesh);
 
-        // --- 3. ANIMATION LOOP ---
-        const clock = new THREE.Clock();
+        const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particles);
 
-        const animate = () => {
-            const elapsedTime = clock.getElapsedTime();
-
-            // Update Shader uniforms
-            material.uniforms.uTime.value = elapsedTime;
-
-            // Rotate object slowly
-            sphere.rotation.y = elapsedTime * 0.1;
-            particlesMesh.rotation.y = -elapsedTime * 0.05;
-
-            // Smooth Mouse Follow (Lamping)
-            targetX = mouseX * 0.001;
-            targetY = mouseY * 0.001;
-            
-            // Apply slight rotation to sphere based on mouse
-            sphere.rotation.x += 0.05 * (targetY - sphere.rotation.x);
-            sphere.rotation.y += 0.05 * (targetX - sphere.rotation.y);
-
-            material.uniforms.uMouse.value.x += (mouseX - material.uniforms.uMouse.value.x) * 0.05;
-            material.uniforms.uMouse.value.y += (mouseY - material.uniforms.uMouse.value.y) * 0.05;
-
-            renderer.render(scene, camera);
-            requestAnimationFrame(animate);
-        };
-
-        // --- 4. INTERACTION & EVENTS ---
-        let mouseX = 0;
-        let mouseY = 0;
+        // --- 5. INTERACTION & ANIMATION ---
+        
+        // Mouse tracking
+        const mouse = new THREE.Vector3();
         let targetX = 0;
         let targetY = 0;
 
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX - window.innerWidth / 2;
-            mouseY = e.clientY - window.innerHeight / 2;
-
-            // Custom Cursor Logic
-            const cursor = document.querySelector('.cursor');
-            const dot = document.querySelector('.cursor-dot');
+        window.addEventListener('mousemove', (e) => {
+            // Normalize mouse -1 to 1
+            const x = (e.clientX / window.innerWidth) * 2 - 1;
+            const y = -(e.clientY / window.innerHeight) * 2 + 1;
             
-            // GSAP for smooth cursor
-            gsap.to(cursor, {
-                x: e.clientX,
-                y: e.clientY,
-                duration: 0.5,
-                ease: "power2.out"
-            });
-            gsap.to(dot, {
-                x: e.clientX,
-                y: e.clientY,
-                duration: 0.1,
-                ease: "power2.out"
-            });
+            // Project to 3D space roughly
+            mouse.x = x * 10;
+            mouse.y = y * 10;
+            mouse.z = 0;
+
+            // Update UI Mouse
+            gsap.to('.cursor-ring', { x: e.clientX, y: e.clientY, duration: 0.6, ease: 'power2.out' });
+            gsap.to('.cursor-dot', { x: e.clientX, y: e.clientY, duration: 0.1 });
         });
 
-        // Resize handler
+        const clock = new THREE.Clock();
+
+        function animate() {
+            const elapsedTime = clock.getElapsedTime();
+            
+            // Update Uniforms
+            particlesMaterial.uniforms.uTime.value = elapsedTime;
+            
+            // Smooth mouse uniform update
+            particlesMaterial.uniforms.uMouse.value.lerp(mouse, 0.1);
+
+            // Subtle Camera movement
+            camera.position.x += (mouse.x * 0.5 - camera.position.x) * 0.05;
+            camera.position.y += (mouse.y * 0.5 + 5 - camera.position.y) * 0.05;
+            camera.lookAt(0,0,0);
+
+            // Render with Bloom
+            composer.render();
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+
+        // Resize
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
+            composer.setSize(window.innerWidth, window.innerHeight);
+            particlesMaterial.uniforms.uPixelRatio.value = Math.min(window.devicePixelRatio, 2);
         });
 
-        // --- 5. INTRO SEQUENCE (GSAP) ---
-        // This is the "Preloader" feel
-        const tl = gsap.timeline();
-
-        // 1. Load bar
-        tl.to('.loader-line', {
-            width: '100%',
-            duration: 1.5,
-            ease: "power2.inOut"
-        })
-        // 2. Fade out loader
-        .to('.loader', {
-            opacity: 0,
-            duration: 0.8,
+        // --- 6. INTRO SEQUENCE ---
+        
+        // Simulate loading
+        const progressEl = document.getElementById('progress');
+        let loadProgress = { val: 0 };
+        
+        gsap.to(loadProgress, {
+            val: 100,
+            duration: 2,
+            ease: "power2.inOut",
+            onUpdate: () => {
+                progressEl.textContent = Math.floor(loadProgress.val);
+            },
             onComplete: () => {
-                document.querySelector('.loader').style.display = 'none';
-                document.querySelector('#webgl').style.opacity = 1;
-            }
-        })
-        // 3. Reveal elements
-        .to('.brand', { opacity: 1, y: 0, duration: 1 }, "-=0.5")
-        .to('.meta', { opacity: 1, y: 0, duration: 1 }, "-=0.8")
-        .to('.hero h1 span', {
-            y: "0%",
-            duration: 1.2,
-            stagger: 0.05, /* The "Expensive" stagger effect */
-            ease: "power3.out"
-        }, "-=0.5")
-        .to('.tagline', { opacity: 1, duration: 1 }, "-=0.5")
-        .to('footer', { opacity: 1, duration: 1 }, "-=0.5");
+                // Reveal Site
+                const tl = gsap.timeline();
+                
+                tl.to('.preloader', {
+                    yPercent: -100,
+                    duration: 1,
+                    ease: "power3.inOut"
+                })
+                .from('.grid-frame .line-h', { scaleX: 0, duration: 1, stagger: 0.2 }, "-=0.5")
+                .from('.grid-frame .line-v', { scaleY: 0, duration: 1, stagger: 0.2 }, "-=1")
+                .from('nav', { opacity: 0, y: -20, duration: 0.8 }, "-=0.5")
+                .to('.subtitle', { opacity: 1, y: 0, duration: 1 }, "-=0.5");
 
-        animate();
+                // Text Split Reveal
+                const titleSpans = document.querySelectorAll('h1 span');
+                titleSpans.forEach(span => {
+                    // Simple split logic wrapper
+                    const text = span.textContent;
+                    span.innerHTML = '';
+                    text.split('').forEach(char => {
+                        const c = document.createElement('div');
+                        c.className = 'char';
+                        c.textContent = char === ' ' ? '\u00A0' : char;
+                        span.appendChild(c);
+                    });
+                });
+
+                gsap.to('.char', {
+                    y: '0%',
+                    stagger: 0.02,
+                    duration: 1,
+                    ease: "power4.out",
+                    delay: 0.5
+                });
+            }
+        });
+
+        // --- 7. SCROLL ANIMATIONS ---
+        gsap.registerPlugin(ScrollTrigger);
+        
+        gsap.to(particles.rotation, {
+            y: Math.PI,
+            scrollTrigger: {
+                trigger: "body",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 1
+            }
+        });
 
     </script>
 </body>
